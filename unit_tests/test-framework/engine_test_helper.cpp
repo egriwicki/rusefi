@@ -15,6 +15,8 @@
 #include "tooth_logger.h"
 #include "logicdata.h"
 #include "hardware.h"
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #if EFI_ENGINE_SNIFFER
 #include "engine_sniffer.h"
@@ -133,12 +135,15 @@ EngineTestHelper::EngineTestHelper(engine_type_e engineType, configuration_callb
 	rememberCurrentConfiguration();
 }
 
+#define LOGICDATA_OUTPUT "output_logicdata"
+
 EngineTestHelper::~EngineTestHelper() {
 	// Write history to file
 	extern bool hasInitGtest;
 	if (hasInitGtest) {
+		fs::create_directories(LOGICDATA_OUTPUT);
     	std::stringstream filePath;
-    	filePath << "unittest_" << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ".logicdata";
+    	filePath << LOGICDATA_OUTPUT << "/unittest_" << ::testing::UnitTest::GetInstance()->current_test_info()->name() << ".logicdata";
 	    writeEvents(filePath.str().c_str());
 	}
 
