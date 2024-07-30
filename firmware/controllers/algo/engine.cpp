@@ -418,7 +418,7 @@ void Engine::injectEngineReferences() {
 
 void Engine::setConfig() {
 #if !EFI_UNIT_TEST
-// huh should this be happy?  static_assert(config != nullptr);
+  static_assert(config != nullptr);
 #endif
 	efi::clear(config);
 
